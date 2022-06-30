@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
-import { createCard, readDeck } from "../../../utils/api/index";
+import { Link, useParams } from "react-router-dom";
+import { readDeck } from "../../../utils/api/index";
+import CardForm from "./CardForm";
 
 function AddCard() {
   const { deckId } = useParams();
-  const history = useHistory();
-  const initialState = {
-    front: "",
-    back: "",
-  };
-
-  const [newCard, setNewCard] = useState(initialState);
   const [deck, setDeck] = useState({});
 
   useEffect(() => {
     async function fetchData() {
       const abortController = new AbortController();
       try {
-        const read = await readDeck(deckId, abortController.signal);
-        setDeck(read);
+        const response = await readDeck(deckId, abortController.signal);
+        setDeck(response);
       } catch (error) {
         console.error("Something went wrong", error);
       }
@@ -27,31 +21,7 @@ function AddCard() {
       };
     }
     fetchData();
-  });
-
-  function handleChange({ target }) {
-    setNewCard({
-      ...newCard,
-      [target.name]: target.value,
-    });
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const abortController = new AbortController();
-    const submit = await createCard(
-      deckId,
-      { ...newCard },
-      abortController.signal
-    );
-    history.go(0);
-    setNewCard(initialState);
-    return submit;
-  }
-
-  async function handleDone() {
-    history.push(`/decks/${deckId}`);
-  }
+  }, [deckId]);
 
   return (
     <div>
@@ -64,37 +34,8 @@ function AddCard() {
         </li>
         <li className="breadcrumb-item active">Add Card</li>
       </ol>
-      <form onSubmit={handleSubmit}>
-        <h2>{deck.name}: Add Card</h2>
-        <div className="form-group">
-          <label>Front</label>
-          <textarea
-            id="front"
-            name="front"
-            className="form-control"
-            onChange={handleChange}
-            type="text"
-            value={newCard.front}
-          />
-        </div>
-        <div className="form-group">
-          <label>Back</label>
-          <textarea
-            id="back"
-            name="back"
-            className="form-control"
-            onChange={handleChange}
-            type="text"
-            value={newCard.back}
-          />
-        </div>
-        <button className="btn btn-secondary mx-1" onClick={handleDone}>
-          Done
-        </button>
-        <button className="btn btn-primary mx-1" type="submit">
-          Save
-        </button>
-      </form>
+      <h2>{deck.name}: Add Card</h2>
+      <CardForm deck={deck} />
     </div>
   );
 }

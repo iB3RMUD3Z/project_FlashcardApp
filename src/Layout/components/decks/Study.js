@@ -21,7 +21,7 @@ function Study() {
       };
     }
     fetchData();
-  });
+  }, [deckId]);
 
   function nextCard(index, total) {
     console.log(index);
@@ -55,7 +55,10 @@ function Study() {
       return null;
     } else {
       return (
-        <button onClick={nextCard} className="btn btn-primary mx-1">
+        <button
+          onClick={() => nextCard(index + 1, cards.length)}
+          className="btn btn-primary mx-1"
+        >
           Next
         </button>
       );
@@ -94,8 +97,8 @@ function Study() {
       <div>
         <h2>Not enough cards.</h2>
         <p>
-          You need at least 3 cards to study. There are {cards.length} cards in
-          this deck.
+          There are {cards.length} cards in this deck. You need at least 3 cards
+          to study.
         </p>
         <Link
           to={`/decks/${deck.id}/cards/new`}

@@ -6,7 +6,7 @@ function DisplayDeck() {
   const history = useHistory();
   const { deckId } = useParams();
   const [deck, setDeck] = useState({});
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState({});
 
   useEffect(() => {
     async function fetchData() {
@@ -23,31 +23,25 @@ function DisplayDeck() {
       };
     }
     fetchData();
-  });
+  }, [deckId]);
 
-  async function handleDelete(deck) {
+  async function handleDelete() {
+    const abortController = new AbortController();
     if (
       window.confirm(`Delete this deck? You will not be able to recover it.`)
     ) {
-      history.go(0);
-      return await deleteDeck(deck.id);
+      await deleteDeck(deckId, abortController.signal);
+      return history.push("/");
     }
   }
 
   async function handleDeleteCard(card) {
+    const abortController = new AbortController();
     if (
       window.confirm(`Delete this card? You will not be able to recover it.`)
     ) {
-      const abortController = new AbortController();
-      try {
-        history.go(0);
-        return await deleteCard(card.id, abortController.signal);
-      } catch (error) {
-        console.error("Something went wrong", error);
-      }
-      return () => {
-        abortController.abort();
-      };
+      await deleteCard(card.id, abortController.signal);
+      return history.go(0);
     }
   }
 
@@ -67,7 +61,7 @@ function DisplayDeck() {
     history.push(`/decks/${deckId}/cards/${card.id}/edit`);
   }
 
-  if (cards.length > 0) {
+  if (cards.length >= 0) {
     return (
       <div>
         <ol className="breadcrumb">
@@ -106,13 +100,13 @@ function DisplayDeck() {
                   </div>
                   <div className="container row">
                     <button
-                      onClick={handleEditCard}
+                      onClick={() => handleEditCard(card)}
                       className="btn btn-secondary mx-1"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={handleDeleteCard}
+                      onClick={() => handleDeleteCard(card)}
                       className="btn btn-danger mx-1"
                     >
                       Delete

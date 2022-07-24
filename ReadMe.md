@@ -2,12 +2,14 @@
 Flashcard-o-matic is an application intended for both teachers to use to create decks of flashcards for the subjects they 
 teach, as well as for students to use to study the decks their teachers have created. 
 
+*Note: This React application applies my knowledge and skills of state management, APIs, effect hooks, and React Router.
+
 ## Link
-- [Flashcard Demo](Coming Soon)
+- [Flashcard App Demo](https://flashcard-app-v1.herokuapp.com/ "Flashcard App Homepage")
 
 ## Technology
 ### Built with:
-- JavaScript, React, HTML, CSS, Bootstrap
+- JavaScript, React, HTML, CSS, Bootstrap 
 
 ## Installation
 1. Fork and clone this repository.

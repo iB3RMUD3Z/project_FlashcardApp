@@ -4,9 +4,6 @@ teach, as well as for students to use to study the decks their teachers have cre
 
 *Note: This React application applies my knowledge and skills of state management, APIs, effect hooks, and React Router.
 
-## Link
-- [Flashcard App Demo](https://flashcard-app-v1.herokuapp.com/ "Flashcard App Homepage")
-
 ## Technology
 ### Built with:
 - JavaScript, React, HTML, CSS, Bootstrap 
